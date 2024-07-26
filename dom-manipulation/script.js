@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
  } 
  document.getElementById('newQuote').addEventListener('click', showRandomQuote) 
 
- window.addQuote = () => {
+ window.createAddQuoteForm = () => {
     const newQuote = {
         text: newQuoteText.value, 
         category: newQuoteCategory.value
