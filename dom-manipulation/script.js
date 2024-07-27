@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
     newQuoteText.value = ''; 
     newQuoteCategory.value = ''; 
     updateCategories(); 
-    saveQuotes();
+    saveQuotes(); 
+    postQuoteToServer(newQuote);
     alert('Quote added successfully');
 }; 
 //function to export quotes to a JSON file 
@@ -87,7 +88,60 @@ const loadQuotes = () => {
         quotes.push(...JSON.parse(storedQuotes)); 
         populateCategories();
     };
-}; 
+};  
+//ftech data from a local sevrer 
+const fetchQuotesFromServer = () =>{
+    fetch('https://jsonplaceholder.typicode.com/posts'); 
+     then(response => response.json()) 
+    .then(data => {
+        const serverQuotes = data.map(post => ({
+             text: post.title, 
+             category: 'server'
+
+        }))
+    }) 
+    quotes.push(...serverQuotes); 
+    populateCategories(); 
+    saveQuotes(); 
+    alert('Quotes fetched from server successfully!')
+    .catch(error => console.error)('Error fetching quotes from server:', error);
+} 
+//function to post a new quote to the server 
+const postQuotetoServer = (quote) => {
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST', 
+        body: JSON.stringify(quote),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }) 
+    .then(response => response.json())
+    .then(data => console.log('Quoye posted to server:', data)) 
+    .catch(error => console.error('Error posting quote to server')); 
+
+} 
+//function to sync quotes with the server periodically 
+const syncQuotes = () => {
+    fetch('https://jsonplaceholder.typicode.com/posts') 
+    .then(response => response.json()) 
+    .then(data => {
+        const serverQuotes = data.map(post => ({
+            text: post.title, 
+            category: 'server'
+        })); 
+        //conflict resolution 
+        const newQuotes = serverQuotes.filter(serverQuote => 
+            quotes.some(localQuote => localQuote === serverQuote.text)
+        );
+        quotes.push(...newQuotes); 
+          populateCategories();
+            saveQuotes();
+            alert('Quotes synced with server successfully!');
+         }) 
+         .catch(error => console.error('Error syncing quotes with server:' , error)); 
+    
+} 
+setInterval(syncQuotes, 300000);
 loadQuotes(); 
 populateCategories();
 
