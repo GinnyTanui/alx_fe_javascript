@@ -90,21 +90,22 @@ const loadQuotes = () => {
     };
 };  
 //ftech data from a local sevrer 
-const fetchQuotesFromServer = () =>{
-    fetch('https://jsonplaceholder.typicode.com/posts'); 
-     then(response => response.json()) 
-    .then(data => {
+const fetchQuotesFromServer = async () =>{ 
+    try{
+        const response = await  fetch('https://jsonplaceholder.typicode.com/posts'); 
+        const data = await response.json(); 
         const serverQuotes = data.map(post => ({
-             text: post.title, 
-             category: 'server'
-
-        }))
-    }) 
-    quotes.push(...serverQuotes); 
-    populateCategories(); 
-    saveQuotes(); 
-    alert('Quotes fetched from server successfully!')
-    .catch(error => console.error)('Error fetching quotes from server:', error);
+            text: post.title, 
+            category: 'server'
+        })); 
+        quotes.push(...serverQuotes); 
+        populateCategories(); 
+        saveQuotes(); 
+        alert('Quotes fetched from server successfully!')
+    } catch(error){
+        console.error('Error fetchong quotes from server');
+    }
+   
 } 
 //function to post a new quote to the server 
 const postQuotetoServer = (quote) => {
