@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const quoteDisplay = document.getElementById("quoteDisplay"); 
     const newQuoteText = document.getElementById("newQuoteText"); 
     const newQuoteCategory = document.getElementById("newQuoteCategory"); 
-    const categorySelect = document.getElementById("category select");  
+    const categorySelect = document.getElementById("categorySelect");  
 
     const updateCategories = () => {
         const uniqueCategories = [...new Set(quotes.map(quote => quote.category))] 
@@ -46,7 +46,49 @@ document.addEventListener('DOMContentLoaded', () => {
     quotes.push(newQuote); 
     newQuoteText.value = ''; 
     newQuoteCategory.value = ''; 
-    updateCategories();
+    updateCategories(); 
+    saveQuotes();
+    alert('Quote added successfully');
 }; 
+//function to export quotes to a JSON file 
+const exportQuotes = () => {
+    const quotesJson = JSON.stringify(quotes); 
+    const blob = new Blob([quotesJson], {type: 'application/json}'}); 
+    const url = URL.createObjectURL(blob); 
+    const a = document.createElement('a'); 
+    a.href = url; 
+    a.download =  'quotes.Json'; 
+    document.body.appendChild('a'); 
+    a.click(); 
+    document.body.removeChild(a); 
+    URL.revokeObjectURL(url);
+};
+//function to import quotes from JSON file 
+const importFromJsonFile = (event) => { 
+    const fileReader = newFileReader();  
+    fileReader.onload = function(event){
+        const importedQuotes = JSON.parse(event.target.result); 
+        quotes.push(...importedQuotes); 
+        updateCategories(); 
+        saveQuotes(); 
+        alert('Quotes imported syccessfully!');
+    }; 
+    fileReader.readAsText(event.target.files[0]);
+
+}; 
+//function to saveQuotes to local storage 
+const saveQuotes = () => {
+    localStorage.setItem('quotes', JSON.stringify(quotes)); 
+}; 
+//fucntion to load quotes from local storage 
+const loadQuotes = () => {
+    const storedQuotes = localStorage.getItem('quotes'); 
+    if(storedQuotes){
+        quotes.push(...JSON.parse(storedQuotes)); 
+        updateCategories();
+    };
+}; 
+loadQuotes(); 
 updateCategories();
+
 });
