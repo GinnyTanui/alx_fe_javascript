@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const newQuoteCategory = document.getElementById("newQuoteCategory"); 
     const categorySelect = document.getElementById("categorySelect");  
 
-    const updateCategories = () => {
+    const populateCategories = () => {
         const uniqueCategories = [...new Set(quotes.map(quote => quote.category))] 
         categorySelect.innerHTML = "<option value = ''>All categories </option>"; 
         uniqueCategories.forEach(category => {
@@ -69,7 +69,7 @@ const importFromJsonFile = (event) => {
     fileReader.onload = function(event){
         const importedQuotes = JSON.parse(event.target.result); 
         quotes.push(...importedQuotes); 
-        updateCategories(); 
+        populateCategories(); 
         saveQuotes(); 
         alert('Quotes imported syccessfully!');
     }; 
@@ -85,10 +85,10 @@ const loadQuotes = () => {
     const storedQuotes = localStorage.getItem('quotes'); 
     if(storedQuotes){
         quotes.push(...JSON.parse(storedQuotes)); 
-        updateCategories();
+        populateCategories();
     };
 }; 
 loadQuotes(); 
-updateCategories();
+populateCategories();
 
 });
