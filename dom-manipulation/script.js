@@ -137,7 +137,7 @@ const syncQuotes = () => {
         quotes.push(...newQuotes); 
           populateCategories();
             saveQuotes();
-            alert('Quotes synced with server successfully!');
+            alert('Quotes synced with server!');
          }) 
          .catch(error => console.error('Error syncing quotes with server:' , error)); 
     
