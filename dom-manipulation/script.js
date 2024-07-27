@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } 
     const showRandomQuote = () => { 
         const selectedCategory = categorySelect.value; 
-        const filteredQuotes = selectedCategory ? quotes.filter(quote => quote.category === selectedCategory) : quotes; 
-        const randomQuote = filteredQuotes[Math.floor(Math.random() * filteredQuotes.length)]; 
+        const filterQuotes = selectedCategory ? quotes.filter(quote => quote.category === selectedCategory) : quotes; 
+        const randomQuote = filterQuotes[Math.floor(Math.random() * filterQuotes.length)]; 
         quoteDisplay.textContent = randomQuote ? randomQuote.text : 'No quotes Available';
  } 
  document.getElementById('newQuote').addEventListener('click', showRandomQuote) 
