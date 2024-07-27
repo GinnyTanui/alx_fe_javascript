@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const categorySelect = document.getElementById("categorySelect");  
 
     const populateCategories = () => {
-        const uniqueCategories = [...new Set(quotes.map(quote => quote.category))] 
+        const categoryFilter = [...new Set(quotes.map(quote => quote.category))] 
         categorySelect.innerHTML = "<option value = ''>All categories </option>"; 
-        uniqueCategories.forEach(category => {
+        categoryFilter.forEach(category => {
             const option = document.createElement('option'); 
             option.value = category; 
             option.textContent = category; 
